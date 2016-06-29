@@ -1,6 +1,8 @@
 package com.example.q.cs496_prj1;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,11 +46,23 @@ public class AddressBookFragment extends Fragment{
 
         /* Inflate view group and initialize member variables */
         View rootView = inflater.inflate(R.layout.fragment_addressbook, container, false);
+
+        /* Initialize floating button */
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
         addr_list = new ArrayList<Address>();
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.addr_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
+
 
 
         /* Read data from JSON */

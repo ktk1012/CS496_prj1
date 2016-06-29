@@ -3,5 +3,6 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="text">#111111</color>
+    <color name="text_addr_name">#3b3b3b</color>
+    <color name="text_addr_num">#000000</color>
 </resources>
