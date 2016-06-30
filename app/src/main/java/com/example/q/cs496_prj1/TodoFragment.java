@@ -11,6 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,11 +45,13 @@ public class TodoFragment extends Fragment {
 
         /* Inflate view group and initialize memeber variables */
         View rootView = inflater.inflate(R.layout.todo_fragment, container, false);
-
         todo_list = new ArrayList<Todo>();
         todo_all = new ArrayList<Todo>();
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.todo_view);
+        final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.todo_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        final Switch mySw = (Switch) rootView.findViewById(R.id.todo_switch);
+        mySw.setChecked(true);
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -106,7 +111,20 @@ public class TodoFragment extends Fragment {
             e.printStackTrace();
         }
 
-        todo_adapter = new TodoAdapter(getActivity().getApplicationContext(), R.layout.todo_card, todo_list, todo_all);
+        mySw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Toast.makeText(getContext(), "Show all", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Show incomplete", Toast.LENGTH_SHORT).show();
+                }
+                todo_adapter = new TodoAdapter(getActivity().getApplicationContext(), R.layout.todo_card, todo_list, todo_all, mySw.isChecked());
+                recyclerView.setAdapter(todo_adapter);
+            }
+        });
+
+        todo_adapter = new TodoAdapter(getActivity().getApplicationContext(), R.layout.todo_card, todo_list, todo_all, mySw.isChecked());
         recyclerView.setAdapter(todo_adapter);
 
         return rootView;

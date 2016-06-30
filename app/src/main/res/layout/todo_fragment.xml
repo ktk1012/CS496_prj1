@@ -13,6 +13,14 @@
         android:layout_width="match_parent"
         android:scrollbars="vertical"/>
 
+    <Switch
+        android:id="@+id/todo_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:layout_alignTop="@+id/todo_view"
+        android:layout_alignEnd="@+id/todo_fab" />
+
     <android.support.design.widget.FloatingActionButton
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/todo_fab"
