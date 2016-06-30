@@ -21,6 +21,7 @@
         <activity android:name=".CreateAddrActivity">
         </activity>
         <activity android:name=".Tab2_expand"> </activity>
+        <activity android:name=".TodoAddActivity"> </activity>
     </application>
 
 </manifest>
