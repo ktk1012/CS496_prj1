@@ -1,6 +1,7 @@
 package com.example.q.cs496_prj1;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.provider.Telephony;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
@@ -35,12 +36,6 @@ public class AddressAdapter extends RecyclerView.Adapter< AddressAdapter.ViewHol
         final Address addr = data.get(position);
         holder.mNameView.setText(addr.get_name());
         holder.mAddrView.setText(addr.get_addr());
-        holder.mCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick (View v) {
-                return;
-            }
-        });
     }
 
     @Override
@@ -53,7 +48,6 @@ public class AddressAdapter extends RecyclerView.Adapter< AddressAdapter.ViewHol
         public final View mView;
         public final TextView mNameView;
         public final TextView mAddrView;
-        public final CardView mCardView;
 
         public ViewHolder(View view) {
             super (view);
@@ -61,7 +55,6 @@ public class AddressAdapter extends RecyclerView.Adapter< AddressAdapter.ViewHol
 
             mNameView = (TextView) view.findViewById(R.id.item_name);
             mAddrView = (TextView) view.findViewById(R.id.item_addr);
-            mCardView = (CardView) view.findViewById(R.id.addr_cardview);
         }
     }
 }

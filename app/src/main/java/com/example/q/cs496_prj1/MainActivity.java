@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+//        getActionBar().setDisplayShowTitleEnabled(false);
+
     }
 
 
@@ -148,11 +150,11 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "Address";
                 case 1:
-                    return "SECTION 2";
+                    return "Gallery";
                 case 2:
-                    return "SECTION 3";
+                    return "TODO";
             }
             return null;
         }

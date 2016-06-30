@@ -42,11 +42,7 @@ import java.util.List;
 public class AddressBookFragment extends Fragment{
 
     /* Request for create new address */
-    private ListView listView;
-    final static int REQEST_ADD = 1234;         /* Reqeust code for creating new address */
-    RecyclerView mRecyclerView;
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
+    private final static int REQEST_ADD = 1234;         /* Reqeust code for creating new address */
     ArrayList<Address> addr_list;
     AddressAdapter addr_adapter;
 
@@ -80,7 +76,6 @@ public class AddressBookFragment extends Fragment{
 
         /* Get JSON string from data directory */
         String jsonString = null;
-        String jString = "[{\"name\":\"asdfasdf\", \"addr\": \"010-1234-1234\"}]";
         try {
             File address_file = new File(getContext().getFilesDir(),
                     getString(R.string.address_file_name));
@@ -128,6 +123,7 @@ public class AddressBookFragment extends Fragment{
 
         /* Set adapter */
         addr_adapter = new AddressAdapter(getActivity().getApplicationContext(), R.layout.listview_addressitem, addr_list);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(addr_adapter);
 
 
@@ -150,7 +146,7 @@ public class AddressBookFragment extends Fragment{
     }
 
     @Override
-    public void onStop() {
+    public void onDestroyView() {
 
         /* Serialize array list to JSON array */
         JSONArray jArray = new JSONArray();
