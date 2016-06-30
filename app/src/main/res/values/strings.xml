@@ -4,4 +4,10 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="address_file_name">address.json</string>
     <string name="todo_file_name">todo.json</string>
+    <string name="gender_prompt">Gender</string>
+    <string-array name="genders">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Undefined</item>
+    </string-array>
 </resources>
