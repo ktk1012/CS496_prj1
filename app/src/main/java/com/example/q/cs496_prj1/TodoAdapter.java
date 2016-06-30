@@ -1,6 +1,7 @@
 package com.example.q.cs496_prj1;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -17,13 +19,16 @@ import java.util.ArrayList;
 public class TodoAdapter extends RecyclerView.Adapter <TodoAdapter.ViewHolder> {
 
     private Context context;
-    ArrayList<Todo> data = null;
+    ArrayList<Todo> data_not_completed = null;
+    ArrayList<Todo> data_all = null;
+    ArrayList<Todo> data_view = null;
     int item_layout;
 
-    public TodoAdapter(Context c, int l, ArrayList<Todo> d) {
+    public TodoAdapter(Context c, int l, ArrayList<Todo> d_1, ArrayList<Todo> d_2) {
         this.context = c;
         this.item_layout = l;
-        this.data = d;
+        this.data_not_completed = d_1;
+        this.data_all = d_2;
     }
 
     @Override
@@ -33,15 +38,24 @@ public class TodoAdapter extends RecyclerView.Adapter <TodoAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        final Todo todo = data.get(position);
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        final Todo todo = data_not_completed.get(position);
         holder.mWorkView.setText(todo.get_work());
         holder.mDueView.setText(todo.get_due_date());
+        holder.mCompleteCheck.setChecked(todo.get_is_complete());
+        holder.mCompleteCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View v){
+                todo.set_is_complete(!todo.get_is_complete());
+                data_not_completed.remove(position);
+                notifyItemRemoved(position);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return this.data.size();
+        return this.data_not_completed.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
