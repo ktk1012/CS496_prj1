@@ -111,21 +111,20 @@ public class TodoFragment extends Fragment {
             e.printStackTrace();
         }
 
+        todo_adapter = new TodoAdapter(getActivity().getApplicationContext(), R.layout.todo_card, todo_list, todo_all, mySw.isChecked());
+        recyclerView.setAdapter(todo_adapter);
+
         mySw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                todo_adapter.ChnageList(isChecked);
                 if (isChecked) {
                     Toast.makeText(getContext(), "Show all", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Show incomplete", Toast.LENGTH_SHORT).show();
                 }
-                todo_adapter = new TodoAdapter(getActivity().getApplicationContext(), R.layout.todo_card, todo_list, todo_all, mySw.isChecked());
-                recyclerView.setAdapter(todo_adapter);
             }
         });
-
-        todo_adapter = new TodoAdapter(getActivity().getApplicationContext(), R.layout.todo_card, todo_list, todo_all, mySw.isChecked());
-        recyclerView.setAdapter(todo_adapter);
 
         return rootView;
     }
