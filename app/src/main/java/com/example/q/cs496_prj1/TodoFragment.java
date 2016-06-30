@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
  */
 public class TodoFragment extends Fragment {
     private final static int REQUEST_ADD = 1234;
+    ArrayList<Todo> todo_all;
     ArrayList<Todo> todo_list;
     TodoAdapter todo_adapter;
 
@@ -42,6 +44,7 @@ public class TodoFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.todo_fragment, container, false);
 
         todo_list = new ArrayList<Todo>();
+        todo_all = new ArrayList<Todo>();
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.todo_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setHasFixedSize(true);
@@ -94,13 +97,16 @@ public class TodoFragment extends Fragment {
                 String work = jObj_temp.getString("work");
                 String due = jObj_temp.getString("due");
                 boolean is_complete = jObj_temp.getBoolean("is_complete");
-                todo_list.add(new Todo(work, due, is_complete));
+                Todo todo = new Todo(work, due, is_complete);
+                todo_all.add(todo);
+                if (!todo.get_is_complete())
+                    todo_list.add(todo);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        todo_adapter = new TodoAdapter(getActivity().getApplicationContext(), R.layout.todo_card, todo_list);
+        todo_adapter = new TodoAdapter(getActivity().getApplicationContext(), R.layout.todo_card, todo_list, todo_all);
         recyclerView.setAdapter(todo_adapter);
 
         return rootView;
@@ -112,7 +118,9 @@ public class TodoFragment extends Fragment {
             if (resultCode == 1) {
                 String todo = intent.getStringExtra("todo");
                 String due = intent.getStringExtra("duedate");
-                todo_list.add(new Todo(todo, due));
+                Todo todo_new = new Todo(todo, due);
+                todo_list.add(todo_new);
+                todo_all.add(todo_new);
                 todo_adapter.notifyItemInserted(todo_list.size() - 1);
                 Snackbar.make(getView(), "Add todo success", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -124,12 +132,12 @@ public class TodoFragment extends Fragment {
     public void onDestroyView() {
 
         JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < todo_list.size(); i++) {
+        for (int i = 0; i < todo_all.size(); i++) {
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("work", todo_list.get(i).get_work());
-                jsonObject.put("due", todo_list.get(i).get_due_date());
-                jsonObject.put("is_complete", todo_list.get(i).get_is_complete());
+                jsonObject.put("work", todo_all.get(i).get_work());
+                jsonObject.put("due", todo_all.get(i).get_due_date());
+                jsonObject.put("is_complete", todo_all.get(i).get_is_complete());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
