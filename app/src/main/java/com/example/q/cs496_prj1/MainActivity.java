@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     return new Tab2();
                 default:
-                    return PlaceholderFragment.newInstance(position + 1);
+                    return new TodoFragment();
             }
         }
 
