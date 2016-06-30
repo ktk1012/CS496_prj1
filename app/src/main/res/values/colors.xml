@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="text_addr_name">#3b3b3b</color>
     <color name="text_addr_num">#000000</color>
+    <color name="color_fab">#ffffff</color>
 </resources>
