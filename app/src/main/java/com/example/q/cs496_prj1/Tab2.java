@@ -1,5 +1,6 @@
 package com.example.q.cs496_prj1;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.database.DataSetObservable;
@@ -35,8 +36,9 @@ public class Tab2 extends Fragment {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(getActivity(), "사진 번호 : " + position,
-                        Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent (Tab2.this.getActivity(),Tab2_expand.class);
+                intent.putExtra("address", String.valueOf(position+1));
+                startActivity(intent);
             }
         });
     return view;
