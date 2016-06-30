@@ -21,14 +21,15 @@ public class TodoAdapter extends RecyclerView.Adapter <TodoAdapter.ViewHolder> {
     private Context context;
     ArrayList<Todo> data_not_completed = null;
     ArrayList<Todo> data_all = null;
-    ArrayList<Todo> data_view = null;
+    boolean checked;
     int item_layout;
 
-    public TodoAdapter(Context c, int l, ArrayList<Todo> d_1, ArrayList<Todo> d_2) {
+    public TodoAdapter(Context c, int l, ArrayList<Todo> d_1, ArrayList<Todo> d_2, boolean checked) {
         this.context = c;
         this.item_layout = l;
         this.data_not_completed = d_1;
         this.data_all = d_2;
+        this.checked = checked;
     }
 
     @Override
@@ -39,7 +40,14 @@ public class TodoAdapter extends RecyclerView.Adapter <TodoAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        final Todo todo = data_not_completed.get(position);
+        final Todo todo;
+
+        if (checked) {
+            todo = data_all.get(position);
+        } else {
+            todo = data_not_completed.get(position);
+        }
+
         holder.mWorkView.setText(todo.get_work());
         holder.mDueView.setText(todo.get_due_date());
         holder.mCompleteCheck.setChecked(todo.get_is_complete());
@@ -48,7 +56,9 @@ public class TodoAdapter extends RecyclerView.Adapter <TodoAdapter.ViewHolder> {
             public void onClick (View v){
                 todo.set_is_complete(!todo.get_is_complete());
                 data_not_completed.remove(position);
-                notifyItemRemoved(position);
+                if (!checked) {
+                    notifyItemRemoved(position);
+                }
             }
         });
     }
