@@ -21,6 +21,7 @@ public class TodoAdapter extends RecyclerView.Adapter <TodoAdapter.ViewHolder> {
     private Context context;
     ArrayList<Todo> data_not_completed = null;
     ArrayList<Todo> data_all = null;
+    ArrayList<Todo> data_current = null;
     boolean checked;
     int item_layout;
 
@@ -30,6 +31,11 @@ public class TodoAdapter extends RecyclerView.Adapter <TodoAdapter.ViewHolder> {
         this.data_not_completed = d_1;
         this.data_all = d_2;
         this.checked = checked;
+        if (checked) {
+            data_current = data_all;
+        } else {
+            data_current = data_not_completed;
+        }
     }
 
     @Override
@@ -42,11 +48,7 @@ public class TodoAdapter extends RecyclerView.Adapter <TodoAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Todo todo;
 
-        if (checked) {
-            todo = data_all.get(position);
-        } else {
-            todo = data_not_completed.get(position);
-        }
+        todo = data_current.get(position);
 
         holder.mWorkView.setText(todo.get_work());
         holder.mDueView.setText(todo.get_due_date());
@@ -54,8 +56,12 @@ public class TodoAdapter extends RecyclerView.Adapter <TodoAdapter.ViewHolder> {
         holder.mCompleteCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v){
+                if (todo.get_is_complete()) {
+                    data_not_completed.add(todo);
+                } else {
+                    data_not_completed.remove(todo);
+                }
                 todo.set_is_complete(!todo.get_is_complete());
-                data_not_completed.remove(position);
                 if (!checked) {
                     notifyItemRemoved(position);
                 }
@@ -63,9 +69,18 @@ public class TodoAdapter extends RecyclerView.Adapter <TodoAdapter.ViewHolder> {
         });
     }
 
+    public void ChnageList(boolean flag) {
+        if (flag) {
+            data_current = data_all;
+        } else {
+            data_current = data_not_completed;
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
-        return this.data_not_completed.size();
+        return this.data_current.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

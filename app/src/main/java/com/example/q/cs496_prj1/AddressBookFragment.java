@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
@@ -109,13 +110,13 @@ public class AddressBookFragment extends Fragment{
         Address ad = null;
         try {
             JSONArray  jArray= new JSONArray(jsonString);
-            String name = "";
-            String addr = "";
             for (int i = 0; i < jArray.length(); i++) {
                 JSONObject jObj_temp = jArray.getJSONObject(i);
-                name = jObj_temp.getString("name");
-                addr = jObj_temp.getString("addr");
-                addr_list.add (new Address(name, addr));
+                String name = jObj_temp.getString("name");
+                String addr = jObj_temp.getString("addr");
+                String email = jObj_temp.getString("email");
+                String gender = jObj_temp.getString("gender");
+                addr_list.add (new Address(name, addr, email, gender));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -126,6 +127,28 @@ public class AddressBookFragment extends Fragment{
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(addr_adapter);
 
+        /* Add recycler view's item click listener */
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
+                new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View childView, int position) {
+                addr_list.get(position).flip_is_expanded();
+                addr_adapter.notifyItemChanged(position);
+            }
+
+            @Override
+            public void onItemLongPress(View childView, final int position) {
+                Snackbar.make(getView(), "LongPress " + String.valueOf(position), Snackbar.LENGTH_SHORT)
+                        .setAction("Remove", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                addr_list.remove(position);
+                                addr_adapter.notifyItemRemoved(position);
+                            }
+                        }).show();
+
+            }
+        }));
 
         return rootView;
     }
@@ -137,7 +160,9 @@ public class AddressBookFragment extends Fragment{
             if (resultCode == 1) {
                 String name = intent.getStringExtra("name");
                 String num = intent.getStringExtra("num");
-                addr_list.add(new Address(name, num));
+                String email = intent.getStringExtra("email");
+                String gender = intent.getStringExtra("gender");
+                addr_list.add(new Address(name, num, email, gender));
                 addr_adapter.notifyItemInserted(addr_list.size() - 1);
                 Snackbar.make(getView(), "Add address success", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -155,6 +180,8 @@ public class AddressBookFragment extends Fragment{
             try {
                 jObj.put("name", addr_list.get(i).get_name());
                 jObj.put("addr", addr_list.get(i).get_addr());
+                jObj.put("email", addr_list.get(i).get_email());
+                jObj.put("gender", addr_list.get(i).get_gender());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
