@@ -138,7 +138,8 @@ public class AddressBookFragment extends Fragment{
 
             @Override
             public void onItemLongPress(View childView, final int position) {
-                Snackbar.make(getView(), "LongPress " + String.valueOf(position), Snackbar.LENGTH_SHORT)
+                String name = addr_list.get(position).get_name();
+                Snackbar.make(getView(), name, Snackbar.LENGTH_SHORT)
                         .setAction("Remove", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

@@ -1,6 +1,7 @@
 package com.example.q.cs496_prj1;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -20,12 +21,10 @@ public class Tab2_expand extends FragmentActivity {
 
         Intent intent=new Intent(this.getIntent());
         String s=intent.getStringExtra("address");
+        String image_name = "image" + s;
         ImageView imageview=(ImageView) findViewById(R.id.imageView);
-        if (s.equals("1")) imageview.setImageResource(R.drawable.image1);
-        if (s.equals("2")) imageview.setImageResource(R.drawable.image2);
-        if (s.equals("3")) imageview.setImageResource(R.drawable.image3);
-        if (s.equals("4")) imageview.setImageResource(R.drawable.image4);
-        if (s.equals("5")) imageview.setImageResource(R.drawable.image5);
+        int id = this.getResources().getIdentifier(image_name, "drawable", this.getPackageName());
+        imageview.setImageResource(id);
     }
 
     public void back(View v) {
